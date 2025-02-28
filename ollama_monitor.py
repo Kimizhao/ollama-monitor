@@ -9,14 +9,14 @@ from datetime import datetime
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "localhost:11434")
 try:
     port = OLLAMA_HOST.split(":")[1]  # 提取端口号
-    OLLAMA_API_URL = f"http://localhost:{port}/api/ps"
+    OLLAMA_API_URL = f"http://localhost:{port}/api/tags"
 except IndexError:
     logging.error("OLLAMA_HOST 环境变量格式错误，应为 '主机:端口'")
     port = "11434" #默认端口
-    OLLAMA_API_URL = f"http://localhost:{port}/api/ps"
+    OLLAMA_API_URL = f"http://localhost:{port}/api/tags"
 
 TIMEOUT_SECONDS = 10
-RESTART_COMMAND = "ollama serve"
+RESTART_COMMAND = "ollama ps"
 
 def setup_logging():
     """配置日志记录器，同时输出到文件和控制台。"""
@@ -71,4 +71,5 @@ if __name__ == "__main__":
     while True:
         if check_ollama_status():
             restart_ollama()
-        time.sleep(5)
+        sleep_time = int(os.environ.get("OLLAMA_MONITOR_INTERVAL", 60))
+        time.sleep(sleep_time)
