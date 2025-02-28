@@ -1,0 +1,11 @@
+.conda/
+
+logs/
+
+build/
+
+dist/
+
+*.egg-info/
+
+*.spec
